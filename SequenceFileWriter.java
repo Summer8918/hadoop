@@ -19,17 +19,18 @@ import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 
 /**
- * SequenceFileWriter:
- * 序列化小文件，格式为<<dir:doc>,contents>
- * eg:I01002:484619newsML.txt	national oilseed processorsassociation weekly soybean crushings reporting members...
+Hadoop的HDFS和MapReduce框架主要是针对大数据文件设计的，在小文件的处理上不但效率低下。
+而且十分消耗内存资源(每一个小文件占用一个Block,每一个block的元数据都存储在namenode
+的内存里)。解决办法通常是选择一个容器，将这些小文件组织起来统一存储。HDFS 提供了两种
+类型的容器，分别是SequenceFile和MapFile。这里使用SequenceFile
  */
 
 public class SequenceFileWriter {
-	/**
-	 * 将一个文件夹下的所有文件序列化,两个参数:
-     * 输入：args[0]：准备序列化的文件的路径
-     * 输出：args[1]：序列化后准备输出的文件路径名字
-     */
+     /**
+      * 将目录下的所有文件序列化
+      * 输入：args[0]：准备序列化的文件的路径
+      * 输出：args[1]：序列化后准备输出的文件路径名字
+      */
 	public static String get_class_and_file_name(String filePath) {
 		StringTokenizer itr = new StringTokenizer(filePath,"/");
         int cnt=itr.countTokens();
@@ -48,6 +49,7 @@ public class SequenceFileWriter {
 		FileSystem fs = FileSystem.get(conf);
 		Path input_path=new Path(args[0]);
 		System.out.println("hello");
+		//递归读取指定目录下的所有文件
 		RemoteIterator<LocatedFileStatus> file_itr=fs.listFiles(input_path, true);
 		int cnt=0;
 		Text key = new Text();
@@ -59,6 +61,7 @@ public class SequenceFileWriter {
 			while(file_itr.hasNext()) {
 				LocatedFileStatus tmp=file_itr.next();
 				Path inFile=tmp.getPath();
+				//读取单个文件的内容，将其转换为String类型，每行以空格分隔
 				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(inFile)));
 				String val_str="";
 				try {
