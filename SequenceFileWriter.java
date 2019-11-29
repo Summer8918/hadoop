@@ -22,7 +22,7 @@ import org.apache.hadoop.io.Text;
 Hadoop的HDFS和MapReduce框架主要是针对大数据文件设计的，在小文件的处理上不但效率低下。
 而且十分消耗内存资源(每一个小文件占用一个Block,每一个block的元数据都存储在namenode
 的内存里)。解决办法通常是选择一个容器，将这些小文件组织起来统一存储。HDFS 提供了两种
-类型的容器，分别是SequenceFile和MapFile。这里使用SequenceFile
+类型的容器，分别是SequenceFile和MapFile。这里使用SequenceFile来存储小文件
  */
 
 public class SequenceFileWriter {
