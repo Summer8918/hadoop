@@ -1,4 +1,4 @@
- # raw data for train and test
+#raw data for train and test
 文件包含二个子目录：country和industry
 country和industry下每个子目录就是一个类别
 但有的子目录下文件非常少，因此要选择文件比较多的目录（至少二个）进行训练和测试。
